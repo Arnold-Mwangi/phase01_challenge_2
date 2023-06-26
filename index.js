@@ -1,9 +1,11 @@
 //function to fetch character items
 function getAnimalNames() {
-    return fetch('./db.json')
+    return fetch('http://localhost:3000/characters')
         .then((response) => response.json())
         .then((data) => {
-            const animals = data.characters;
+            console.log(data);
+            const animals = data
+            // const animals = data.characters;
             // now render the list of animals
             renderAnimals(animals)
         })
@@ -12,7 +14,7 @@ function getAnimalNames() {
 
 // function to render the list of animals
 function renderAnimals(animals) {
-    const animalObjects = document.getElementById("animal_objects");
+    const animalObjects = document.getElementById("animal_object");
     animalObjects.innerHTML = ""
 
     // loop through each animal name
@@ -23,31 +25,44 @@ function renderAnimals(animals) {
         // add a click event whenever a name is clicked to display the details
         animalItem.addEventListener('click', () => {
             displayAnimalDetails(animal);
+            changeActiveAnimalNameAppearance(animal);
         });
         animalObjects.appendChild(animalItem)
     });
 }
 
 // handle displaying animal details with displayAnimalDetails function
+
 function displayAnimalDetails(animal) {
     // GET THE ANIMAL DETAILS SECTION
-    const animalDetails = document.getElementById('animal_details');
-    animalDetails.innerHTML = '';
+  
+    const imageDiv = document.getElementById('animal_image')     
+    const nameDiv = document.getElementById('animal_name')   
+    const voteDiv = document.getElementById('animal_votes')  
+    const buttonDiv = document.getElementById('animal_button')     
+       
+      
+    
+    imageDiv.innerHTML = ''; 
+    nameDiv.innerHTML ='';
+    voteDiv.innerHTML = '';
+    buttonDiv.innerHTML = '';
+    
 
     // NOW RENDER THE IMAGE TO THE DOM BY CREATING AN ELEMENT
     const animalImage = document.createElement('img');
     animalImage.src = animal.image;
-    animalDetails.append(animalImage)
+    imageDiv.append(animalImage)
 
     //add animal Name
     const animalName =document.createElement('h1');
     animalName.textContent = `${animal.name}`;
-    animalDetails.appendChild(animalName)
+    nameDiv.appendChild(animalName)
     
     // we add animal vote
     const animalVote = document.createElement('p');
     animalVote.textContent = `Votes ${animal.votes}`
-    animalDetails.appendChild(animalVote);
+    voteDiv.appendChild(animalVote);
 
     // we add a voting button
 
@@ -57,8 +72,23 @@ function displayAnimalDetails(animal) {
         voteForAnimal(animal);
 
     });
-    animalDetails.appendChild(voteButton);
-
+    buttonDiv.appendChild(voteButton);
+  
+}
+// function to change animal name  color once active
+let animalState = false;
+function changeActiveAnimalNameAppearance(animal){
+    const animalItem = document.createElement("li");
+    animalItem.textContent = animal.name;
+    let currentAnimalState = animalItem.style.color = 'black'
+    let updatedColor = animalItem.style.color = 'red';
+    if(animalState){
+        currentAnimalState = currentAnimalState
+        animalState = false;
+    }else{
+        currentAnimalState=updatedColor 
+        animalState = true;
+    }
 }
 
 // now we deal with  function to add the votes
