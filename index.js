@@ -38,6 +38,12 @@ function displayAnimalDetails(animal) {
     const animalImage = document.createElement('img');
     animalImage.src = animal.image;
     animalDetails.append(animalImage)
+
+    //add animal Name
+    const animalName =document.createElement('h1');
+    animalName.textContent = `${animal.name}`;
+    animalDetails.appendChild(animalName)
+    
     // we add animal vote
     const animalVote = document.createElement('p');
     animalVote.textContent = `Votes ${animal.votes}`
